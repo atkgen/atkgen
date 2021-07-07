@@ -1,1 +1,160 @@
-index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CGM ALBIS&trade; Tageskennwort</title>
+
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <style>
+    
+        *,*:focus,*:hover{
+            outline:none;
+        }
+        html, body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5F5;
+            margin: 0;
+        }
+        section {
+            text-align: center;
+        }
+        section.light {
+            border-top: 1px solid lightgray;
+            border-bottom: 1px solid lightgray;
+            background-color: white;
+        }
+        section#footer {
+            font-size: 13px;
+            color: gray;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 { text-align: center;  }
+        .pt-5 { padding-top: 50px; } 
+        .py-5 { padding: 50px 0px; } 
+        .mt-5 { margin-top: 50px; } 
+        .mb-5 { margin-bottom: 50px; } 
+        .mb-3 { margin-bottom: 30px; } 
+        .mb-10 { margin-bottom: 100px; } 
+        .my-1 { margin: 5px 0; }
+        .my-5 { margin: 50px 0; }
+        .d-3 { font-size: 30px; }
+        input {
+            border: 1px solid lightgray;
+            border-color: rgba(50, 127, 199, 0.25);;
+            border-radius: 2px;
+        }
+        input:focus {
+            box-shadow: 0 0 0 0.2rem rgba(50, 127, 199, 0.25);
+        }
+    
+        input[type="date"] {
+            width: 200px;
+            height: 30px;
+            text-align:center;
+            outline: 0;
+        }
+    
+        input[type="number"] {
+            width: 40px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<section class="py-5">
+    <h1>CGM ALBIS&trade; Tageskennwort</h1>
+</section>
+
+<section class="light mb-10 py-5">
+
+    <p>Errechne das Tageskennwort für Wartungsarbeiten an CGM ALBIS:</p>
+
+    <div class="my-5">
+        <div class="my-1">Datum</div>
+        <input type="date" id="date" onchange="c();">
+    </div>
+    <div class="my-5">
+        <div class="my-1">Version</div>
+        <input type="number" id="vmaj" oninput="c();">.
+        <input type="number" id="vmin" oninput="c();">.xx
+    </div>
+    
+    <div>
+        <div class="my-5">
+            <div class="my-1">Tageskennwort</div>
+            <span class="d-3" id="p1"></span>
+        </div>
+        <div>
+            <div class="my-1">Administratorkennwort</div>
+            <span class="d-3" id="p2"></span>
+        </div>
+    </div>
+</section>
+
+<section class="light mt-5 py-5 mb-3">
+
+    <h3>Wie wird das berechnet?</h3>
+
+    <p>Wir haben die Berechnung in JavaScript implementiert. Schau Dir einfach den Code an:</p>
+
+    <div style="width: 90%; margin: 0 auto;">
+        <pre style="border-radius: 5px;"><code class="language-js">var d = new Date(); 
+
+var vs = [..."21.19"];
+var v = parseInt("" + vs[0] + vs[1] + vs[3]) * -1;
+
+var dow = (d.getDay() == 0 ? 7 : d.getDay()) ** 2;
+var mdiv = (d.getMonth() + 1) / 3 | 0;
+if(mdiv % 3 == 0) mdiv++;
+
+var x = dow * (d.getMonth() + 1);
+var y = v * mdiv;
+var z = 1180 + d.getDate();
+
+x - y + z; // TKW
+(x - y + z) * 2; // AKW
+        </code></pre>
+    </div>
+    <div class="my-5"></div>
+
+</section>
+
+<section id="footer">
+    Made with <span style="color: #DF000F; font-size: 110%;">&#x2764;</span><br>
+    Trademark belongs to respective owner.
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+<script>
+    document.getElementById("date").valueAsDate = new Date();
+    document.getElementById("vmaj").value = 21;
+    document.getElementById("vmin").value = 29;
+    c();
+    function c() {
+        var dp = document.getElementById("date").value.split('-');
+        var d = new Date(dp[0], dp[1] - 1, dp[2]); 
+    
+        var vs = [..."" + 
+            document.getElementById("vmaj").value + 
+            document.getElementById("vmin").value
+        ];
+        var v = parseInt("" + vs[0] + vs[1] + vs[2]) * -1;
+    
+        var dow = (d.getDay() == 0 ? 7 : d.getDay()) ** 2;
+        var mdiv = (d.getMonth() + 1) / 3 | 0;
+        if(mdiv % 3 == 0) mdiv++;
+    
+        var x = dow * (d.getMonth() + 1);
+        var y = v * mdiv;
+        var z = 1180 + d.getDate();
+    
+        document.getElementById("p1").innerHTML = x - y + z;
+        document.getElementById("p2").innerHTML = (x - y + z) * 2;
+    }
+</script>
+</body>
+</html>
