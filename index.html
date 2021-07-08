@@ -106,7 +106,7 @@ var v = parseInt("" + vs[0] + vs[1] + vs[3]) * -1;
 
 var dow = (d.getDay() == 0 ? 7 : d.getDay()) ** 2;
 var mdiv = (d.getMonth() + 1) / 3 | 0;
-if(mdiv % 3 == 0) mdiv++;
+if((d.getMonth() + 1) % 3 != 0) mdiv++;
 
 var x = dow * (d.getMonth() + 1);
 var y = v * mdiv;
@@ -143,7 +143,7 @@ x - y + z; // TKW
     
         var dow = (d.getDay() == 0 ? 7 : d.getDay()) ** 2;
         var mdiv = (d.getMonth() + 1) / 3 | 0;
-        if(mdiv % 3 == 0) mdiv++;
+        if((d.getMonth() + 1) % 3 != 0) mdiv++;
     
         var x = dow * (d.getMonth() + 1);
         var y = v * mdiv;
